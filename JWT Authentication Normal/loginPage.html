@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Google OAuth 2.0 Login</title>
+</head>
+
+<body>
+	<button onclick="loginWithGoogle()">Login with Google</button>
+
+	<script>
+		function loginWithGoogle() {
+			// Replace with the actual authorization endpoint
+			var authorizationEndpoint = "http://fakedomain.com:8080/oauth2/authorization/google";
+
+			// Redirect the user to the Google authorization endpoint
+			window.location.href = authorizationEndpoint;
+			handleGoogleResponse();
+		}
+
+		// Check for the presence of the 'code' parameter in the URL
+		// This is typically done after the user is redirected back from the OAuth provider
+		// Extract the authorization code and handle it as needed
+		function handleGoogleResponse() {
+			var urlParams = new URLSearchParams(window.location.search);
+			var authorizationCode = urlParams.get('code');
+			alert("ddf");
+			if (authorizationCode) {
+				// Handle the authorization code as needed (e.g., send it to your server)
+				console.log('Authorization Code:', authorizationCode);
+
+				// Optionally, you can send the authorization code to your server using an AJAX request
+				// and receive the JSON response
+				sendAuthorizationCode(authorizationCode);
+			}
+		}
+
+		// Function to send the authorization code to your server and handle the JSON response
+		function sendAuthorizationCode(authorizationCode) {
+			// Replace with the actual endpoint on your server to handle the authorization code
+			var serverEndpoint = "http://fakedomain.com:8080/v1/user";
+
+			// Make an AJAX request to your server
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", serverEndpoint, true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+			// Define the data to be sent
+			var data = "code=" + encodeURIComponent(authorizationCode);
+
+			// Set up a callback function to handle the response
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					// Parse the JSON response from the server
+					var jsonResponse = JSON.parse(xhr.responseText);
+					alert(jsonResponse);
+					// Handle the JSON response as needed
+					console.log('JSON Response:', jsonResponse);
+
+					// Store the JSON response in a variable or use it as necessary
+					// Example: var storedResponse = jsonResponse;
+				}
+			};
+
+			// Send the data to the server
+			xhr.send(data);
+		}
+
+        // Call the function on page load to check for the 'code' parameter in the URL
+
+	</script>
+</body>
+
+</html>
